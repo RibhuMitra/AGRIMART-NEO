@@ -1,0 +1,108 @@
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Information</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6 text-center">Payment Information</h1>
+        <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h2 class="text-2xl font-semibold mb-4">Select Payment Method</h2>
+            <div class="mb-6">
+                <input type="radio" id="card" name="payment_method" class="mr-2">
+                <label for="card" class="text-lg font-medium">Card Payment</label>
+                <div id="card_details" class="mt-4 hidden">
+                    <div class="mb-4">
+                        <label for="card_number" class="block text-sm font-medium text-gray-700">Card Number</label>
+                        <input type="text" id="card_number" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="mb-4">
+                        <label for="expiry_date" class="block text-sm font-medium text-gray-700">Expiry Date</label>
+                        <input type="text" id="expiry_date" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                    <div class="mb-4">
+                        <label for="cvv" class="block text-sm font-medium text-gray-700">CVV</label>
+                        <input type="text" id="cvv" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-6">
+                <input type="radio" id="upi" name="payment_method" class="mr-2">
+                <label for="upi" class="text-lg font-medium">UPI Payment</label>
+                <div id="upi_details" class="mt-4 hidden">
+                    <div class="mb-4">
+                        <label for="upi_id" class="block text-sm font-medium text-gray-700">UPI ID</label>
+                        <input type="text" id="upi_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                    </div>
+                </div>
+            </div>
+            <div class="mb-6">
+                <input type="radio" id="cod" name="payment_method" class="mr-2">
+                <label for="cod" class="text-lg font-medium">Cash on Delivery</label>
+            </div>
+            <button id="pay-now-btn" class="w-full bg-indigo-600 text-white py-2 rounded-md text-lg font-medium hover:bg-indigo-700">Proceed to Pay</button>
+        </div>
+    </div>
+
+
+
+    <script>
+        document.querySelectorAll('input[name="payment_method"]').forEach((elem) => {
+            elem.addEventListener("change", function(event) {
+                document.getElementById('card_details').classList.add('hidden');
+                document.getElementById('upi_details').classList.add('hidden');
+                if (event.target.id === 'card') {
+                    document.getElementById('card_details').classList.remove('hidden');
+                } else if (event.target.id === 'upi') {
+                    document.getElementById('upi_details').classList.remove('hidden');
+                }
+            });
+        });
+
+        
+
+        // Function to collect user and cart data
+        function collectData() {
+            const user = {
+                name: 'Ribhu Mitra',
+                email: 'ribhumitra30@gmail.com',
+                address: 'Siliguri'
+            };
+            const cart = [
+                { name: 'Fruits', price: 150 },
+                { name: 'Fresh Vegetables', price: 80 },
+                { name: 'Dairy', price: 50 }
+            ];
+            const totalPrice = 280;
+            const paymentMethod = document.querySelector('input[name="payment_method"]:checked').id;
+
+            return { user, cart, totalPrice, paymentMethod };
+        }
+
+        // Proceed to Pay button functionality
+        document.getElementById('pay-now-btn').addEventListener('click', () => {
+            if (!document.querySelector('input[name="payment_method"]:checked')) {
+                alert('Please select a payment method!');
+                return;
+            }
+
+            // Collect payment and user data
+            const data = collectData();
+
+            // Save data in localStorage to use in the invoice page
+            localStorage.setItem('invoiceData', JSON.stringify(data));
+
+            // Redirect to invoice page
+            window.location.href = 'Invoice.html';
+        });
+    </script>
+</body>
+</html>
